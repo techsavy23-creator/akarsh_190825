@@ -31,15 +31,25 @@ A system monitors several restaurants in the US and needs to monitor if the stor
 
 Store-Monitoring-System-master/
 │── store/
+
 │   ├── main/                # Main Django app
+
 │   │   ├── models.py        # Database models
+
 │   │   ├── views.py         # API endpoints
+
 │   │   ├── serializers.py   # Data serializers
+
 │   │   ├── helper.py        # Report logic
+
 │   │   └── management/
+
 │   │       └── commands/    # Custom commands to load CSV
+
 │   └── ...
+
 │── media/reports/           # Generated reports (CSV files)
+
 │── manage.py                # Django management file
 
 
