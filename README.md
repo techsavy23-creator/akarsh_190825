@@ -1,30 +1,39 @@
 # Store Monitoring System
 
-This is a backend system built using Python Django framework and PostgreSQL database to monitor the status of several restaurants in the US. The system tracks whether the stores are online or not during their business hours and provides restaurant owners with detailed reports on store uptime and downtime.
+This project is a backend system that monitors the uptime/downtime of restaurants (stores) in the US. It processes raw data (store hours, status, timezones) and generates reports about store performance.
 
 # Problem : 
 A system monitors several restaurants in the US and needs to monitor if the store is online or not. All restaurants are supposed to be online during their business hours. Due to some unknown reasons, a store might go inactive for a few hours. Restaurant owners want to get a report of the how often this happened in the past.   
 
-build backend APIs that will help restaurant owners achieve this goal.
 
-# Data Source: 
-CSV can be found in /store/main/csv_data
-1. We poll every store roughly every hour and have data about whether the store was active or not in a CSV.  The CSV has 3 columns (`store_id, timestamp_utc, status`) where status is active or inactive.  All timestamps are in **UTC**
-2. We have the business hours of all the stores - schema of this data is `store_id, dayOfWeek(0=Monday, 6=Sunday), start_time_local, end_time_local`
-    1. These times are in the **local time zone**
-    2. If data is missing for a store, assume it is open 24*7
-3. Timezone for the stores - schema is `store_id, timezone_str`
-    1. If data is missing for a store, assume it is America/Chicago
-    2. This is used so that data sources 1 and 2 can be compared against each other. 
 
-APIs to output a csv filte o the user that has the following schema
-- Uptime and downtime should only include observations within business hours
-`store_id, uptime_last_hour(in minutes), uptime_last_day(in hours), update_last_week(in hours), downtime_last_hour(in minutes), downtime_last_day(in hours), downtime_last_week(in hours)`
+# Features
+1)Store management (add/list stores)
+2)Load CSV data (store hours, timezones, statuses)
+3)Track store uptime and downtime
+4)Generate CSV reports with uptime/downtime summaries
+5)REST API built using Django + Django REST Framework 
 
-# Solution: - 
+#Tech Stack
+1)Backend: Django, Django REST Framework
+2)Database: SQLite (default, can be replaced with Postgres/MySQL)
+3)Language: Python 3.12
+4)Other: Git for version control
 
-- Tech used: 
-Python Django framework and PostgreSQL database.
+#Structure 
+Store-Monitoring-System-master/
+│── store/
+│   ├── main/                # Main Django app
+│   │   ├── models.py        # Database models
+│   │   ├── views.py         # API endpoints
+│   │   ├── serializers.py   # Data serializers
+│   │   ├── helper.py        # Report logic
+│   │   └── management/
+│   │       └── commands/    # Custom commands to load CSV
+│   └── ...
+│── media/reports/           # Generated reports (CSV files)
+│── manage.py                # Django management file
+
 
 # Step by step logic for last one day (uptime and downtime):
 - Initialize a dictionary last_one_day_data with keys "uptime", "downtime", and "unit". The values for "uptime" and "downtime" are set to 0, and "unit" is set to "hours".
@@ -57,4 +66,12 @@ Python Django framework and PostgreSQL database.
   --data '{
 	"report_id": 74
 	
-}'
+#Output CSV Format
+
+store_id,
+uptime_last_hour_minutes,
+uptime_last_day_hours,
+uptime_last_week_hours,
+downtime_last_hour_minutes,
+downtime_last_day_hours,
+downtime_last_week_hours
